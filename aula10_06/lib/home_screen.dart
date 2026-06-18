@@ -13,13 +13,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Database _db = Database();
-  // Dados simulados para preencher o escopo da Opção 1
   List<ServiceOrder> _serviceOrders = [];
 
   @override
   void initState() {
     super.initState();
-    // Carrega os dados iniciais do getOrders()
     _serviceOrders = _db.getOrders();
   }
 
@@ -113,28 +111,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Abre o modal de cadastro e aguarda o retorno do objeto
           final ServiceOrder? novaOS = await showModalBottomSheet<ServiceOrder>(
             context: context,
             isScrollControlled: true,
-            // Permite que o modal suba além da metade da tela
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
             builder: (context) => const CadastroOrderModal(),
           );
 
-          // Se o usuário preencheu e salvou (não cancelou voltando a tela)
           if (novaOS != null) {
             print('Nova OS recebida: ${novaOS.client}');
 
             setState(() {
               _db.addOrder(novaOS);
-              // Atualiza a lista local
               _serviceOrders = _db.getOrders();
             });
 
-            // Feedback para usuário
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

@@ -1,17 +1,12 @@
 import 'ServiceOrder.dart';
 
 class Database {
-  // --- INÍCIO DO PADRÃO SINGLETON ---
-  // Cria uma instância interna privada
+
   static final Database _instance = Database._internal();
 
-  // Construtor privado para que ninguém de fora use "new Database()"
-  // criando outro objeto
   Database._internal();
 
-  // Sempre que alguém chamar Database(), retorna a mesma instância da memória
   factory Database() => _instance;
-  // --- FIM DO PADRÃO SINGLETON ---
 
   final List<ServiceOrder> serviceOrdersMock = [
     ServiceOrder(
@@ -34,7 +29,6 @@ class Database {
     ),
   ];
 
-  // O método getOrders encapsula os dados mockados e retorna a lista convertida
   List<ServiceOrder> getOrders() {
     return serviceOrdersMock;
   }

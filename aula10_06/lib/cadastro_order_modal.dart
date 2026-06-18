@@ -11,11 +11,9 @@ class CadastroOrderModal extends StatefulWidget {
 class _CadastroOrderModalState extends State<CadastroOrderModal> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controladores para capturar o texto digitado
   final _clientController = TextEditingController();
   final _descController = TextEditingController();
 
-  // Status inicial padrão
   String _statusSelecionado = 'Aberta';
 
   @override
@@ -27,7 +25,6 @@ class _CadastroOrderModalState extends State<CadastroOrderModal> {
 
   @override
   Widget build(BuildContext context) {
-    // Padding dinâmico para o teclado não cobrir os campos
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -36,7 +33,7 @@ class _CadastroOrderModalState extends State<CadastroOrderModal> {
         left: 20,
         right: 20,
         bottom: bottomInset + 20,
-      ), // EdgeInsets.only
+      ),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -50,27 +47,25 @@ class _CadastroOrderModalState extends State<CadastroOrderModal> {
                   context,
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
-              ), // Text
+              ),
               const SizedBox(height: 20),
 
-              // Campo Cliente
               TextFormField(
                 controller: _clientController,
                 decoration: const InputDecoration(
                   labelText: 'Cliente / Local',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.business),
-                ), // InputDecoration
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Por favor, insira o cliente.';
                   }
                   return null;
                 },
-              ), // TextFormField
+              ),
               const SizedBox(height: 16),
 
-              // Campo Descrição
               TextFormField(
                 controller: _descController,
                 maxLines: 3,
@@ -78,24 +73,23 @@ class _CadastroOrderModalState extends State<CadastroOrderModal> {
                   labelText: 'Descrição do Problema/Serviço',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.description),
-                ), // InputDecoration
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Por favor, insira uma descrição.';
                   }
                   return null;
                 },
-              ), // TextFormField
+              ),
               const SizedBox(height: 16),
 
-              // Seletor de Status (Dropdown)
               DropdownButtonFormField<String>(
                 initialValue: _statusSelecionado,
                 decoration: const InputDecoration(
                   labelText: 'Status Inicial',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.info_outline),
-                ), // InputDecoration
+                ),
                 items: ['Aberta', 'Em Andamento', 'Concluída']
                     .map(
                       (status) =>
@@ -109,37 +103,34 @@ class _CadastroOrderModalState extends State<CadastroOrderModal> {
                     });
                   }
                 },
-              ), // DropdownButtonFormField
+              ),
               const SizedBox(height: 24),
 
-              // Botão Salvar
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Criando o objeto com IDs fictícios/gerados temporariamente
                     final novaOrdem = ServiceOrder(
                       id: 'OS-2026-${DateTime.now().millisecondsSinceEpoch.toString().substring(9)}',
                       client: _clientController.text,
                       status: _statusSelecionado,
                       desc: _descController.text,
-                    ); // ServiceOrder
+                    );
 
-                    // Fecha o modal e retorna a nova ordem para quem chamou
                     Navigator.pop(context, novaOrdem);
                   }
                 },
                 child: const Text(
                   'Salvar Ordem',
                   style: TextStyle(fontSize: 16),
-                ), // Text
+                ),
               ), // ElevatedButton
             ],
-          ), // Column
-        ), // SingleChildScrollView
-      ), // Form
-    ); // Padding
+          ),
+        ),
+      ),
+    );
   }
 }
